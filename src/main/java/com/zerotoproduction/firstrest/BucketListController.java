@@ -10,28 +10,20 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 public class BucketListController {
 
-    private List<BucketList> myBucketList = new ArrayList();
+    private BucketList myBucketList = new BucketList();
     private final AtomicLong counter = new AtomicLong();
 
 //    public BucketListController(){
 //        myBucketList.add(new BucketList(counter.incrementAndGet(), "Visit Colosseum in Rome"));
 //    }
 
-    @GetMapping(value = "/")
-    public ResponseEntity index() {
-        return ResponseEntity.ok(myBucketList);
-    }
 
-    @GetMapping(value = "/bucket")
+    @GetMapping(value = "/")
     public ResponseEntity getBucket() {
-        BucketList itemToReturn = null;
-        for(BucketList bucket : myBucketList){
-                itemToReturn = bucket;
-        }
-        if(itemToReturn == null){
-            return ResponseEntity.ok("No bucket found with id ");
+        if(myBucketList == null ){
+            return ResponseEntity.ok("No date found");
         }else {
-            return ResponseEntity.ok(itemToReturn);
+            return ResponseEntity.ok(myBucketList);
         }
 
     }
@@ -41,15 +33,8 @@ public class BucketListController {
                                           @RequestParam(value="im") String import_,
                                           @RequestParam(value="tr") String transate_
                                           ) {
-        myBucketList.add(new BucketList(counter.incrementAndGet(), export,import_,transate_));
+        myBucketList = new BucketList(counter.incrementAndGet(), export,import_,transate_);
         return ResponseEntity.ok(myBucketList);
     }
 
-
-
-    @DeleteMapping(value = "/")
-    public ResponseEntity removeBucketList() {
-        myBucketList.clear();
-        return ResponseEntity.ok(myBucketList);
-    }
 }
